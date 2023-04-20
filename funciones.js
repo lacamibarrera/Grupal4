@@ -1,5 +1,6 @@
 //fecha de naciemito del usuario
-let fechausuario = document.getElementById("")
+let fechausuario = document.getElementById("fechanacimiento");
+console.log(fechaNacimiento)
 
 
 const nombreDelDiaSegunFecha = fecha => [
