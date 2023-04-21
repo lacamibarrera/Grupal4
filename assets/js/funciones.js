@@ -50,7 +50,7 @@ function calcularEdad(fecha) {
             mes--;
         }
     }
-
+    //Crea un objeto con los datos obtenidos (Dia/Mes/Año)
     return { años: edad, meses: mes, dias: dia };
 }
 
@@ -83,22 +83,42 @@ function diasParaCumpleaños(fecha) {
 }
 
 function mostrarEdad() {
-    // Obtener el valor del input de fecha de nacimiento
-    const fechaNacimiento = document.getElementById("fecha-nacimiento").value;
+    const fechaCalendario = document.getElementById("fecha-nacimiento").value;
 
     // Calcular la edad a partir de la fecha seleccionada
-    const edad = calcularEdad(fechaNacimiento);
+    const edad = calcularEdad(fechaCalendario); //Aqui utiliza el objeto con los datos creados en calcularEdad()
+
+    // Obtener el nombre del día de la semana de la fecha seleccionada
+    let nombreDia = [
+        'domingo',
+        'lunes',
+        'martes',
+        'miércoles',
+        'jueves',
+        'viernes',
+        'sábado',
+    ][new Date(fechaCalendario).getDay()];
 
     // Actualizar el contenido del elemento HTML con el resultado
     let resultado = document.getElementById('resultado')
-    resultado.innerHTML = `Tienes ${edad.años} años, ${edad.meses} meses y ${edad.dias} días.`;
+    resultado.innerHTML = "Tienes " + edad.años + " años, " + edad.meses + " meses y " + edad.dias + " días y naciste un " + nombreDia;
 
-    // Verificar si es el cumpleaños
-    if (esCumpleaños(fechaNacimiento)) {
+    // Verifica si es el cumpleaños con la funcion esCumpleaños()
+    if (esCumpleaños(fechaCalendario)) {
         resultado.innerHTML += " ¡Feliz cumpleaños!";
     } else {
-        // Calcular los días que faltan para el próximo cumpleaños
-        const diasParaCumple = diasParaCumpleaños(fechaNacimiento);
-        resultado.innerHTML += `Tu próximo cumpleaños es en ${diasParaCumple} días.`;
+        // Calcula los días que faltan para el próximo cumpleaños
+        const diasParaCumple = diasParaCumpleaños(fechaCalendario);
+        resultado.innerHTML += " Tu próximo cumpleaños es en " + diasParaCumple + " días.";
     }
+}
+
+// Parte B
+function obetenerFechas() {
+    // Obtener el valor del input de calendario
+    const fechaIngreso = document.getElementById("fechaIngreso").value;
+    const fechaSalida = document.getElementById("fechaSalida").value;
+
+    
+
 }
