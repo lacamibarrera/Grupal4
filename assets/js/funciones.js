@@ -21,111 +21,84 @@ fechasParaProbar.forEach(fecha => {
     console.log("En " + fecha + " fue " + nombreDelDiaSegunFecha(fecha));
 });
 
+
 // Función que calcula la edad a partir de una fecha de nacimiento ingresada por el usuario en un input de HTML
-function calcularEdad() {
-    let fecha = document.getElementById("user_date").value;
-    const informacionEdad = obtenerInformacionDeEdad(fecha);
-    let textEdad = document.getElementById('resultado') //Da el resultado en un 'p'
-    textEdad.innerHTML = informacionEdad;
+function calcularEdad(fecha) {
+    // Crear un objeto Date a partir del valor de la fecha
+    const fechaNacimiento = new Date(fecha);
 
-    if (validate_fecha(fecha) == true) { // Valida que la fecha sea correcta
+    let hoy = new Date();
+    let cumpleanos = new Date(hoy.getFullYear(), fechaNacimiento.getMonth(), fechaNacimiento.getDate());
+    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+    let mes = hoy.getMonth() - fechaNacimiento.getMonth();
 
-        // Si la fecha es correcta, se calcula la edad
-        let values = fecha.split("-");
-        let dia = values[2];
-        let mes = values[1];
-        let ano = values[0];
-
-        // Se obtienen los valores actuales
-        let fecha_hoy = new Date();
-        let ahora_ano = fecha_hoy.getYear();
-        let ahora_mes = fecha_hoy.getMonth() + 1;
-        let ahora_dia = fecha_hoy.getDate();
-
-        // Se realiza el cálculo de la edad
-        let edad = (ahora_ano + 1900) - ano;
-        if (ahora_mes < mes) {
-            edad--;
-        }
-        if ((mes == ahora_mes) && (ahora_dia < dia)) {
-            edad--;
-        }
-        if (edad > 1900) {
-            edad -= 1900;
-        }
-
-        // Se calculan los meses
-        let meses = 0;
-        if (ahora_mes > mes)
-            meses = ahora_mes - mes;
-        if (ahora_mes < mes)
-            meses = 12 - (mes - ahora_mes);
-        if (ahora_mes == mes && dia > ahora_dia)
-            meses = 11;
-
-        // Se calculan los días
-        let dias = 0;
-        if (ahora_dia > dia) dias = ahora_dia - dia;
-        if (ahora_dia < dia) {
-            ultimoDiaMes = newDate(ahora_ano, ahora_mes, 0);
-            dias = ultimoDiaMes.getDate() - (dia - ahora_dia);
-        }
-        document.getElementById("result").innerHTML = "Tienes " + edad + " años, " + meses + " meses y" + dias + " días";
-    } else {
-        // Si la fecha es incorrecta, se muestra un mensaje de error
-        document.getElementById("result").innerHTML = "La fecha " + fecha + " es incorrecta";
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+        edad--;
+        mes += 12;
     }
-};
 
-// Función que obtiene información de la edad a partir de una fecha de nacimiento dada
-function obtenerInformacionDeEdad(fechaNacimiento) {
-    const diasDeLaSemana = [
-        'domingo',
-        'lunes',
-        'martes',
-        'miércoles',
-        'jueves',
-        'viernes',
-        'sábado'
-    ];
+    let dia = hoy.getDate() - fechaNacimiento.getDate();
 
-    // Crea un objeto de fecha a partir de la fecha de nacimiento dada
-    const fecha = new Date(fechaNacimiento);
+    if (dia < 0) {
+        let ultimoDiaMesAnterior = new Date(hoy.getFullYear(), hoy.getMonth(), 0).getDate();
+        dia = ultimoDiaMesAnterior - fechaNacimiento.getDate() + hoy.getDate();
 
-    // Obtiene el nombre del día de la semana correspondiente a la fecha de nacimiento
-    const diaDeLaSemana = diasDeLaSemana[fecha.getDay()];
+        if (mes === 0) {
+            mes = 11;
+            edad--;
+        } else {
+            mes--;
+        }
+    }
 
-    // Crea un objeto de fecha actual
-    const fechaActual = new Date();
+    return { años: edad, meses: mes, dias: dia };
+}
 
-    // Calcula la edad en años restando el año de la fecha de nacimiento del año actual
-    const edadEnAnos = fechaActual.getFullYear() - fecha.getFullYear();
+//Calcula si la fecha ingresada corresponde al cumpleaños
+function esCumpleaños(fecha) {
+    let cumpleanos = new Date(fecha);
+    let hoy = new Date();
 
-    // Calcula la edad en meses restando el mes de la fecha de nacimiento del mes actual, y ajustando por si el mes actual es menor al mes de nacimiento
-    const edadEnMeses = (fechaActual.getMonth() + 12 - fecha.getMonth()) % 12;
+    if (cumpleanos.getMonth() === hoy.getMonth() && cumpleanos.getDate() === hoy.getDate()) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
-    // Calcula la edad en días restando el día de la fecha de nacimiento del día actual
-    const edadEnDias = fechaActual.getDate() - fecha.getDate();
+//Calcula cuantos dias faltan para siguiente cumpleaños
+function diasParaCumpleaños(fecha) {
+    let cumpleanos = new Date(fecha);
+    let hoy = new Date();
+    let proximoCumpleanos = new Date(hoy.getFullYear(), cumpleanos.getMonth(), cumpleanos.getDate());
 
-    // Calcula la cantidad de meses absolutos (sin ajuste por años)
-    const mesesAbsolutos = edadEnAnos * 12 + edadEnMeses;
+    if (proximoCumpleanos < hoy) {
+        proximoCumpleanos.setFullYear(proximoCumpleanos.getFullYear() + 1);
+    }
 
-    // Calcula la fecha del próximo cumpleaños
-    const siguienteCumpleanos = new Date(fechaActual.getFullYear() + (fechaActual.getMonth() > fecha.getMonth() || (fechaActual.getMonth() === fecha.getMonth() && fechaActual.getDate() >= fecha.getDate())), fecha.getMonth(), fecha.getDate());
+    let diferencia = proximoCumpleanos.getTime() - hoy.getTime();
+    let dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
 
-    // Calcula el tiempo restante (en días) para el próximo cumpleaños
-    const tiempoParaCumpleanos = Math.floor((siguienteCumpleanos - fechaActual) / (1000 * 60 * 60 * 24));
+    return dias;
+}
 
-    // Obtiene la hora actual en formato legible
-    const horaActual = fechaActual.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+function mostrarEdad() {
+    // Obtener el valor del input de fecha de nacimiento
+    const fechaNacimiento = document.getElementById("fecha-nacimiento").value;
 
-    // Crea un mensaje con la información de edad y días de vida
-    let mensaje = "El día que nació fue: " + diaDeLaSemana + ". Su edad es: " + edadEnAnos + " años, " + edadEnMeses + " meses y " + edadEnDias + " días. La cantidad de meses que tiene son: " + mesesAbsolutos + " meses. La cantidad de días que tiene son: " + Math.floor((fechaActual - fecha) / (1000 * 60 * 60 * 24)) + " días";
+    // Calcular la edad a partir de la fecha seleccionada
+    const edad = calcularEdad(fechaNacimiento);
 
-    //Si es el dia de su cumpleaños le arroja el mensaje:
-    if (tiempoParaCumpleanos === 0) {
-        return "¡Felicidades, está de cumpleaños! La hora en que ha realizado su consulta es: " + horaActual;
-    } else { //Si no es su cumpleaños le da el tiempo que falta par ael siguiente y la hora de consulta
-        return "Para su próximo cumpleaños faltan: " + tiempoParaCumpleanos + " días. La hora en que ha realizado su consulta es: " + horaActual;
+    // Actualizar el contenido del elemento HTML con el resultado
+    let resultado = document.getElementById('resultado')
+    resultado.innerHTML = `Tienes ${edad.años} años, ${edad.meses} meses y ${edad.dias} días.`;
+
+    // Verificar si es el cumpleaños
+    if (esCumpleaños(fechaNacimiento)) {
+        resultado.innerHTML += " ¡Feliz cumpleaños!";
+    } else {
+        // Calcular los días que faltan para el próximo cumpleaños
+        const diasParaCumple = diasParaCumpleaños(fechaNacimiento);
+        resultado.innerHTML += `Tu próximo cumpleaños es en ${diasParaCumple} días.`;
     }
 }

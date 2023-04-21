@@ -13,17 +13,19 @@
 
 <body>
     <div class="container text-center col-lg-8 mt-5">
-        <h1 class="display-4 col-10 my-4">Tu Fecha de Nacimiento</h1>
+        <h1 class="display-4 col-10 mx-auto my-4">Tu Fecha de Nacimiento</h1>
         <form class="my-3  rounded p-2">
             <div class="container  mt-2">
                 <label class="form-label" for="fechaNacimiento">Ingrese su fecha de nacimiento:</label>
-                <input class="form-control text-center" type="date" id="user_date" style="width: 300px;">
+                <input class="form-control mx-auto text-center" type="date" id="fecha-nacimiento" style="width: 200px;">
             </div>
-            <button type="submit" class="btn btn-primary col-4 my-4 mx-2" onclick="calcularEdad()">Calcular edad</button>
+            <button class="btn btn-primary col-4 my-4 mx-2" onclick="calcularEdad()">Calcular edad</button>
         </form>
         <p id="resultado"></p>
         <p id="result"></p>
     </div>
+    <p id="resultado"></p>
+    <p id="result"></p>
 
     <script src="./assets/js/funciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
