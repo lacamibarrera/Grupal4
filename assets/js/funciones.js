@@ -1,27 +1,3 @@
-// Función que devuelve el nombre del día de la semana de una fecha dada
-const nombreDelDiaSegunFecha = fecha => [
-    'domingo',
-    'lunes',
-    'martes',
-    'miércoles',
-    'jueves',
-    'viernes',
-    'sábado',
-][new Date(fecha).getDay()];
-
-// Fechas para probar la función anterior
-const fechasParaProbar = [
-    "2014-06-20 18:30:00",
-    "2013-08-03 10:00:00",
-    "1997-06-21 22:00:00",
-];
-
-// Recorre por cada fecha en el arreglo anterior e imprime su nombre de día correspondiente
-fechasParaProbar.forEach(fecha => {
-    console.log("En " + fecha + " fue " + nombreDelDiaSegunFecha(fecha));
-});
-
-
 // Función que calcula la edad a partir de una fecha de nacimiento ingresada por el usuario en un input de HTML
 function calcularEdad(fecha) {
     // Crear un objeto Date a partir del valor de la fecha
@@ -89,7 +65,7 @@ function mostrarEdad() {
     const edad = calcularEdad(fechaCalendario); //Aqui utiliza el objeto con los datos creados en calcularEdad()
 
     // Obtener el nombre del día de la semana de la fecha seleccionada
-    let nombreDia = [
+    let nombreDiaNacimiento = [
         'domingo',
         'lunes',
         'martes',
@@ -109,16 +85,17 @@ function mostrarEdad() {
     } else {
         // Calcula los días que faltan para el próximo cumpleaños
         const diasParaCumple = diasParaCumpleaños(fechaCalendario);
-        resultado.innerHTML += " Tu próximo cumpleaños es en " + diasParaCumple + " días.";
+        resultado.innerHTML += ". Tu próximo cumpleaños es en " + diasParaCumple + " días.";
     }
 }
 
 // Parte B
-function obetenerFechas() {
+function obtenerFechas() {
     // Obtener el valor del input de calendario
-    const fechaIngreso = document.getElementById("fechaIngreso").value;
-    const fechaSalida = document.getElementById("fechaSalida").value;
+    let fechaIngreso = document.getElementById("fechaIngreso").value;
+    let fechaSalida = document.getElementById("fechaSalida").value;
 
-    
+
+
 
 }
