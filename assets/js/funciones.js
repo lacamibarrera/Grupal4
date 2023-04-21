@@ -95,6 +95,21 @@ function obtenerFechas() {
     let fechaIngreso = document.getElementById("fechaIngreso").value;
     let fechaSalida = document.getElementById("fechaSalida").value;
 
-    console.log(fechaIngreso, fechaSalida);
 
+    calcularTiempo(fechaIngreso, fechaSalida);
 }
+
+function calcularTiempo(fIngreso, fSalida){
+
+    let fecha1 = new Date(fIngreso.substring(0,4), fIngreso.substring(5,7), fIngreso.substring(8,10));
+    let fecha2 = new Date(fSalida.substring(0,4), fSalida.substring(5,7), fSalida.substring(8,10));
+
+    let diasDif = fecha2.getTime() - fecha1.getTime();
+    let dias = Math.round((diasDif/(1000 * 60 * 60 * 24))+1);
+
+    console.log(fecha1, fecha2);
+    console.log(dias);
+}
+
+
+
