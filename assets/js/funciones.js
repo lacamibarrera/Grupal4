@@ -95,26 +95,39 @@ function mostrarEdad() {
 
 
 // Parte B
+
+function obtenerFechas() {
+    // Obtiene la fecha de ingreso ingresada por el usuario
+    let fechaIngreso = document.getElementById("fechaIngreso").value;
+    // Muestra el tiempo transcurrido desde la fecha de ingreso hasta la fecha actual en años, meses y días
+    mostrarTiempoEnOrganizacion(fechaIngreso);
+  }
    
 function calcularTiempo(fechaInicial, fechaFinal) {
+    // Obtiene la diferencia en milisegundos entre las fechas
     let diferencia = new Date(fechaFinal) - new Date(fechaInicial);
+    // Calcula los años utilizando la cantidad de milisegundos por año
     let anios = Math.floor(diferencia / (1000 * 60 * 60 * 24 * 365));
+    // Resta los años para calcular los meses
     diferencia -= anios * (1000 * 60 * 60 * 24 * 365);
+    // Calcula los meses utilizando la cantidad de milisegundos por mes (en promedio)
     let meses = Math.floor(diferencia / (1000 * 60 * 60 * 24 * 30.44));
+    // Resta los meses para calcular los días
     diferencia -= meses * (1000 * 60 * 60 * 24 * 30.44);
+    // Calcula los días utilizando la cantidad de milisegundos por día
     let dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
   
+    // Devuelve un objeto con los años, meses y días calculados
     return {anios, meses, dias};
   }
   
   function mostrarTiempoEnOrganizacion(fechaIngreso) {
+    // Obtiene la fecha actual
     let fechaActual = new Date();
+    // Calcula el tiempo transcurrido desde la fecha de ingreso hasta la fecha actual
     let tiempo = calcularTiempo(fechaIngreso, fechaActual);
+    // Crea un mensaje con el tiempo transcurrido en años, meses y días
     let mensaje = "Lleva " + tiempo.anios + " años, " + tiempo.meses + " meses y " + tiempo.dias + " días en nuestra organización.";
+    // Muestra el mensaje en HTML 
     document.getElementById("tiempoOrganizacion").innerHTML = mensaje;
-  }
-  
-  function obtenerFechas() {
-    let fechaIngreso = document.getElementById("fechaIngreso").value;
-    mostrarTiempoEnOrganizacion(fechaIngreso);
   }
