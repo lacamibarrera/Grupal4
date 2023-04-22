@@ -95,20 +95,39 @@ function mostrarEdad() {
 
 
 // Parte B
+
 function obtenerFechas() {
-    // Obtener el valor del input de calendario
+    // Obtiene la fecha de ingreso ingresada por el usuario
     let fechaIngreso = document.getElementById("fechaIngreso").value;
-    let fechaSalida = document.getElementById("fechaSalida").value;
-
-
-    calcularTiempo(fechaIngreso, fechaSalida);
-}
-    
-function calcularTiempo(fIngreso, fSalida){
-    let fecha1 = new Date(fIngreso.substring(0,4), fIngreso.substring(5,7)-1, fIngreso.substring(8,10));
-    let fecha2 = new Date(fSalida.substring(0,4), fSalida.substring(5,7)-1, fSalida.substring(8,10));
-    let diasDif = fecha2.getTime() - fecha1.getTime();
-    let dias = Math.round((diasDif/(1000 * 60 * 60 * 24))+1);
-     console.log(fecha1, fecha2);
-     console.log(dias);
-}
+    // Muestra el tiempo transcurrido desde la fecha de ingreso hasta la fecha actual en años, meses y días
+    mostrarTiempoEnOrganizacion(fechaIngreso);
+  }
+   
+function calcularTiempo(fechaInicial, fechaFinal) {
+    // Obtiene la diferencia en milisegundos entre las fechas
+    let diferencia = new Date(fechaFinal) - new Date(fechaInicial);
+    // Calcula los años utilizando la cantidad de milisegundos por año
+    let anios = Math.floor(diferencia / (1000 * 60 * 60 * 24 * 365));
+    // Resta los años para calcular los meses
+    diferencia -= anios * (1000 * 60 * 60 * 24 * 365);
+    // Calcula los meses utilizando la cantidad de milisegundos por mes (en promedio)
+    let meses = Math.floor(diferencia / (1000 * 60 * 60 * 24 * 30.44));
+    // Resta los meses para calcular los días
+    diferencia -= meses * (1000 * 60 * 60 * 24 * 30.44);
+    // Calcula los días utilizando la cantidad de milisegundos por día
+    let dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+  
+    // Devuelve un objeto con los años, meses y días calculados
+    return {anios, meses, dias};
+  }
+  
+  function mostrarTiempoEnOrganizacion(fechaIngreso) {
+    // Obtiene la fecha actual
+    let fechaActual = new Date();
+    // Calcula el tiempo transcurrido desde la fecha de ingreso hasta la fecha actual
+    let tiempo = calcularTiempo(fechaIngreso, fechaActual);
+    // Crea un mensaje con el tiempo transcurrido en años, meses y días
+    let mensaje = "Lleva " + tiempo.anios + " años, " + tiempo.meses + " meses y " + tiempo.dias + " días en nuestra organización.";
+    // Muestra el mensaje en HTML 
+    document.getElementById("tiempoOrganizacion").innerHTML = mensaje;
+  }
