@@ -95,20 +95,26 @@ function mostrarEdad() {
 
 
 // Parte B
-function obtenerFechas() {
-    // Obtener el valor del input de calendario
+   
+function calcularTiempo(fechaInicial, fechaFinal) {
+    let diferencia = new Date(fechaFinal) - new Date(fechaInicial);
+    let anios = Math.floor(diferencia / (1000 * 60 * 60 * 24 * 365));
+    diferencia -= anios * (1000 * 60 * 60 * 24 * 365);
+    let meses = Math.floor(diferencia / (1000 * 60 * 60 * 24 * 30.44));
+    diferencia -= meses * (1000 * 60 * 60 * 24 * 30.44);
+    let dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+  
+    return {anios, meses, dias};
+  }
+  
+  function mostrarTiempoEnOrganizacion(fechaIngreso) {
+    let fechaActual = new Date();
+    let tiempo = calcularTiempo(fechaIngreso, fechaActual);
+    let mensaje = "Lleva " + tiempo.anios + " años, " + tiempo.meses + " meses y " + tiempo.dias + " días en nuestra organización.";
+    document.getElementById("tiempoOrganizacion").innerHTML = mensaje;
+  }
+  
+  function obtenerFechas() {
     let fechaIngreso = document.getElementById("fechaIngreso").value;
-    let fechaSalida = document.getElementById("fechaSalida").value;
-
-
-    calcularTiempo(fechaIngreso, fechaSalida);
-}
-    
-function calcularTiempo(fIngreso, fSalida){
-    let fecha1 = new Date(fIngreso.substring(0,4), fIngreso.substring(5,7)-1, fIngreso.substring(8,10));
-    let fecha2 = new Date(fSalida.substring(0,4), fSalida.substring(5,7)-1, fSalida.substring(8,10));
-    let diasDif = fecha2.getTime() - fecha1.getTime();
-    let dias = Math.round((diasDif/(1000 * 60 * 60 * 24))+1);
-     console.log(fecha1, fecha2);
-     console.log(dias);
-}
+    mostrarTiempoEnOrganizacion(fechaIngreso);
+  }
